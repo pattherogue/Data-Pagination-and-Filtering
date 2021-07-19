@@ -18,6 +18,11 @@ Create the `showPage` function
 This function will create and insert/append the elements needed to display a "page" of nine students
 */
 
+function displayPage (list, page) {
+   const startIndex = (page * 9) - 9; /*store start index */
+   const endIndex = page * 9; /* store end index */
+   const studentList = document.querySelector('.student-list'); /* UL element with class of "student-list" */ 
+}
 
 
 /*
