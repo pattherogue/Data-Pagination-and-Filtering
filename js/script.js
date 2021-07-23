@@ -21,12 +21,11 @@ This function will create and insert/append the elements needed to display a "pa
 /* page parameter - represent page number */
 function displayPage (list, page) {
    const startIndex = (page * 9) - 9; /*store start index */
-   const endIndex = page * 9; /* store end index */
+   const endIndex = Math.min(page * 9, list.length); /* store end index */
    const studentList = document.querySelector('.student-list'); /* UL element with class of "student-list" */ 
    studentList.innerHTML = ''; /* remove any previously displayed studnets */
    /* loops over list parameter */
-   for(let i = 0; i < list.length; i++) {
-      if(i >= startIndex && i < endIndex ) {
+   for(let i = startIndex; i < endIndex; i++) {
          const student = list[i];
          let html = `
          <li class="student-item cf">
@@ -42,7 +41,6 @@ function displayPage (list, page) {
          `;
          /* insert elements created to the "studentList" variable */
          studentList.insertAdjacentHTML('beforeend', html);
-      }
    }
 };
 
@@ -52,26 +50,27 @@ Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
 /* list parameter - represent student data */
-function addPagination(list) {
+function addPagination(data) {
    /* variable to store number of pagination buttons needed */
-   const numOfButtons = Math.ceil(list.length / 9);
+   const numOfButtons = Math.ceil(data.length / 9);
    /* select UL element with class "link-list" */
    const linkList = document.querySelector('ul.link-list');
    /* remove any pagination buttons previously displayed */
    linkList.innerHTML = '';
    /* loop over variable for number of pages needed */
-   for(let i = 1; i < numOfButtons; i++) {
-      /* DOM elements needed to display pagination button */
-      let button = `
-         <li>
-            <button type="button">1</button>
-         </li>
-      `;
-      /* insert elements to link-list variable */
-      linkList.insertAdjacentHTML('beforeend', button);
-      /* select first pagination button */
-      const active = document.querySelector('button');
-      active.className = 'active';
+   for(let i = 1; i <= numOfButtons; i++) {
+         /* DOM elements needed to display pagination button */
+         let button = `
+               <li>
+                  <button type="button">${i}</button>
+               </li>
+            `;
+         /* insert elements to link-list variable */
+         linkList.insertAdjacentHTML('beforeend', button);
+         /* select first pagination button */
+         const active = document.querySelector('button');
+         active.className = 'active';
+      };
       /* create event listener */
       linkList.addEventListener('click', (e) => {
          if (e.target.tagName === 'BUTTON') {
@@ -81,13 +80,12 @@ function addPagination(list) {
             /* add active class to pagination button that was just clicked */
             e.target.className = 'active';
             /* call showPage function passing list paramenter */
-            showPage(page, e.target.textContent);
+            displayPage(data, e.target.textContent);
          }
       });
-   };
 };
 
 
 // Call functions
+displayPage(data, 1);
 addPagination(data);
-showPage(data, 1);
